@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# local reservation data (file store)
+/.data
+
 # dependencies
 /node_modules
 /.pnp
@@ -30,8 +33,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (secrets stay local; the example template is committed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +43,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# tmp and scripts
+tmp/
+scripts/
