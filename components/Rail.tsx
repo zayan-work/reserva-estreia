@@ -1,4 +1,5 @@
 import { Chat, Check, Clock, Layers } from "./icons";
+import Image from "next/image";
 
 /** Right rail — "why join". Static reassurance beside the form (Spec §5). */
 const BENEFITS = [
@@ -30,6 +31,15 @@ const BENEFITS = [
 export default function Rail() {
   return (
     <div className="rail">
+      <figure className="railFigure">
+        <Image
+          src="/images/05_grupo_inclusivo@2x.webp"
+          alt="Mosaico com mulheres de diferentes corpos e tons de pele usando peças da coleção"
+          width={1200}
+          height={800}
+          sizes="(min-width: 861px) 47vw, 92vw"
+        />
+      </figure>
       <h3>Por que entrar na lista</h3>
       {BENEFITS.map((b) => (
         <div className="b" key={b.title}>

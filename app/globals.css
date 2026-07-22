@@ -151,10 +151,18 @@ header {
   transform: translateY(-1px);
 }
 
-/* ---------- hero ---------- */
+/* ---------- hero ----------
+   Layout rule that must not regress (client note, v0.0.2): the copy must never
+   sit on the model's face. In hero-editorial.webp the face occupies x 43–56%,
+   y 3–27% of the frame. Mobile stacks the photo above the copy, so there is no
+   overlap at all. From 900px the photo is pinned to the right 64% — which puts
+   the face at ~62–73% of the viewport at every desktop width — while the copy
+   panel is capped at 46%. Changing either number reopens the overlap. */
 .hero {
   position: relative;
-  padding: 66px 0 48px;
+  isolation: isolate;
+  background: var(--wine-deep);
+  color: var(--blush);
   overflow: hidden;
 }
 .hero::before {
@@ -162,91 +170,123 @@ header {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-      120% 90% at 88% -10%,
-      rgba(232, 96, 122, 0.2),
-      transparent 55%
+      90% 55% at 6% 96%,
+      rgba(232, 96, 122, 0.28),
+      transparent 62%
     ),
-    radial-gradient(90% 70% at -10% 110%, rgba(201, 154, 91, 0.16), transparent 60%);
+    radial-gradient(70% 50% at 0% 0%, rgba(201, 154, 91, 0.16), transparent 62%);
+  pointer-events: none;
   z-index: 0;
 }
-.hero .wrap {
+
+/* photo layer */
+.heroMedia {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  /* fade the photo into the wine below instead of a hard seam */
+  -webkit-mask-image: linear-gradient(180deg, #000 58%, transparent 99%);
+  mask-image: linear-gradient(180deg, #000 58%, transparent 99%);
+}
+.heroMedia img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 52% 6%; /* keeps the whole face inside the crop */
+}
+
+.heroInner {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 44px;
-  align-items: center;
+  /* .wrap's `margin: 0 auto` would otherwise make this shrink-to-fit once
+     .hero becomes a grid container — auto margins suppress `stretch`. */
+  width: 100%;
+  margin-top: -14px;
+  padding-bottom: 46px;
+}
+.hero .eyebrow {
+  color: var(--gold);
 }
 .hero h1 {
-  font-size: clamp(2.5rem, 6vw, 4.15rem);
-  color: var(--wine);
-  margin: 16px 0 18px;
+  font-size: clamp(2.3rem, 9vw, 3.1rem);
+  color: #fff;
+  margin: 14px 0 16px;
 }
 .hero h1 em {
+  /* block so the italic phrase always starts its own line — it must never
+     break mid-phrase as "coleção. Feita / pra você." */
+  display: block;
   font-style: italic;
-  color: var(--rose);
+  color: var(--rose-soft);
 }
 .hero p.lede {
-  font-size: 1.12rem;
-  color: var(--muted);
-  max-width: 34ch;
-  margin-bottom: 26px;
+  font-size: 1.02rem;
+  color: rgba(247, 228, 233, 0.82);
+  max-width: 38ch;
+  margin-bottom: 24px;
 }
-.heroCard {
-  background: linear-gradient(160deg, var(--wine), var(--wine-deep));
-  border-radius: 24px;
-  padding: 34px;
-  color: var(--blush);
-  box-shadow: var(--shadow);
-  position: relative;
-  overflow: hidden;
+.heroCta {
+  display: inline-block;
+  background: var(--rose);
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 600;
+  padding: 15px 30px;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 14px 30px -14px rgba(232, 96, 122, 0.8);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
 }
-.heroCard::after {
-  content: "";
-  position: absolute;
-  width: 240px;
-  height: 240px;
-  right: -70px;
-  top: -70px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(232, 96, 122, 0.5), transparent 68%);
+.heroCta:hover {
+  background: #fff;
+  color: var(--wine);
+  transform: translateY(-1px);
 }
-.heroCard .k {
-  position: relative;
-  z-index: 1;
+
+/* live count + the three legal-safety reassurances */
+.heroProof {
+  margin-top: 30px;
+  padding: 20px 22px;
+  border: 1px solid rgba(247, 228, 233, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-.heroCard .big {
+.heroProof .big {
   font-family: var(--font-fraunces), serif;
-  font-size: 3.3rem;
+  font-size: 2.7rem;
   font-weight: 600;
   line-height: 1;
   color: #fff;
   font-variant-numeric: tabular-nums;
 }
-.heroCard .biglabel {
-  font-size: 0.8rem;
+.heroProof .biglabel {
+  font-size: 0.74rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--rose-soft);
   margin-top: 6px;
 }
-.heroCard .rule {
-  height: 1px;
-  background: rgba(247, 228, 233, 0.22);
-  margin: 22px 0;
+.heroProof .k {
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(247, 228, 233, 0.18);
 }
-.heroCard ul {
+.heroProof ul {
   list-style: none;
   display: grid;
-  gap: 13px;
+  gap: 11px;
 }
-.heroCard li {
+.heroProof li {
   display: flex;
   gap: 11px;
-  font-size: 0.95rem;
-  color: var(--blush);
+  font-size: 0.9rem;
+  color: rgba(247, 228, 233, 0.86);
 }
-.heroCard li b {
+.heroProof li b {
   color: #fff;
   font-weight: 600;
 }
@@ -265,6 +305,60 @@ header {
   stroke: #fff;
   stroke-width: 2.6;
   fill: none;
+}
+
+/* tablet — wider crop, copy still stacked underneath */
+@media (min-width: 560px) {
+  .heroMedia {
+    aspect-ratio: 16 / 10;
+  }
+  .heroInner {
+    padding-bottom: 56px;
+  }
+}
+
+/* desktop — photo pinned right, copy panel capped left of the face */
+@media (min-width: 900px) {
+  .hero {
+    display: grid;
+    align-items: center;
+    min-height: clamp(560px, 78vh, 780px);
+  }
+  .heroMedia {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 64%;
+    aspect-ratio: auto;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.18) 9%,
+      #000 34%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.18) 9%,
+      #000 34%
+    );
+  }
+  .heroMedia img {
+    object-position: 50% 10%;
+  }
+  .heroInner {
+    margin-top: 0;
+    padding-top: 58px;
+    padding-bottom: 58px;
+  }
+  .heroPanel {
+    max-width: min(46%, 520px);
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 4.3vw, 3.85rem);
+  }
+  .hero p.lede {
+    font-size: 1.08rem;
+  }
 }
 
 /* ---------- trust strip ---------- */
@@ -306,21 +400,51 @@ section.block {
 }
 
 /* ---------- how it works ---------- */
-.steps {
+.hiw .wrap {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 26px;
+  grid-template-areas:
+    "head"
+    "figure"
+    "steps";
+}
+.hiw .head {
+  grid-area: head;
+  margin-bottom: 0;
+}
+.hiwFigure {
+  grid-area: figure;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 22px 48px -30px rgba(51, 16, 31, 0.62);
+}
+.hiwFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.steps {
+  grid-area: steps;
+  display: grid;
+  gap: 14px;
 }
 .step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 14px;
+  align-items: start;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: var(--r);
-  padding: 26px 24px;
-  position: relative;
+  padding: 20px 22px;
 }
 .step .n {
   font-family: var(--font-fraunces), serif;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #fff;
   background: var(--rose);
@@ -329,16 +453,197 @@ section.block {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  margin-bottom: 16px;
 }
 .step h3 {
-  font-size: 1.16rem;
+  font-size: 1.12rem;
   color: var(--wine);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .step p {
   font-size: 0.95rem;
   color: var(--muted);
+}
+@media (min-width: 900px) {
+  .hiw .wrap {
+    grid-template-columns: 1.02fr 0.98fr;
+    grid-template-areas:
+      "head   figure"
+      "steps  figure";
+    gap: 26px 54px;
+    align-items: start;
+  }
+  .hiwFigure {
+    align-self: center;
+  }
+}
+
+/* ---------- collection carousel ---------- */
+.carousel {
+  padding: 56px 0;
+  overflow: hidden;
+  background: radial-gradient(
+      circle at 6% 10%,
+      rgba(232, 96, 122, 0.13),
+      transparent 27%
+    ),
+    linear-gradient(180deg, var(--cream), #fffaf7);
+}
+.head.center {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 58ch;
+  text-align: center;
+}
+.carouselViewport {
+  position: relative;
+}
+.carouselTrack {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  /* first card lines up with .wrap on wide screens, bleeds to the edge on phones */
+  padding: 4px max(22px, calc((100% - 1120px) / 2)) 16px;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: max(22px, calc((100% - 1120px) / 2));
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carouselTrack::-webkit-scrollbar {
+  display: none;
+}
+.carouselCard {
+  position: relative;
+  flex: 0 0 72vw;
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  border: 1px solid rgba(74, 24, 48, 0.12);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--blush);
+  box-shadow: 0 16px 38px -26px rgba(51, 16, 31, 0.52);
+  scroll-snap-align: start;
+}
+.carouselCard img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+.carouselCard:hover img {
+  transform: scale(1.035);
+}
+.carouselCard::after {
+  content: "";
+  position: absolute;
+  inset: 42% 0 0;
+  background: linear-gradient(180deg, transparent, rgba(51, 16, 31, 0.82));
+  pointer-events: none;
+}
+.carouselCard figcaption {
+  position: absolute;
+  z-index: 1;
+  right: 18px;
+  bottom: 17px;
+  left: 18px;
+  margin: 0;
+  color: #fff;
+}
+.carouselCard figcaption span {
+  display: block;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.12;
+}
+.carouselCard figcaption p {
+  margin-top: 5px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* phone affordance: dots. desktop: arrows. */
+.carouselDots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 12px;
+}
+.carouselDots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(74, 24, 48, 0.24);
+  cursor: pointer;
+  transition: width 0.24s, background 0.24s;
+}
+.carouselDots button.on {
+  width: 20px;
+  background: var(--wine);
+}
+.carouselNav {
+  display: none;
+}
+@media (min-width: 768px) {
+  .carousel {
+    padding: 76px 0;
+  }
+  .carouselTrack {
+    gap: 18px;
+  }
+  .carouselCard {
+    flex-basis: clamp(220px, 38vw, 280px);
+  }
+  .carouselDots {
+    display: none;
+  }
+  .carouselNav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+    padding-inline: max(22px, calc((100% - 1120px) / 2));
+  }
+  .carouselNav button {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--wine);
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .carouselNav button:hover:not(:disabled) {
+    color: #fff;
+    background: var(--wine);
+    transform: translateY(-1px);
+  }
+  .carouselNav button:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .carouselNav svg {
+    width: 21px;
+    height: 21px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+@media (min-width: 900px) {
+  .carouselCard {
+    flex-basis: clamp(250px, 26vw, 320px);
+  }
 }
 
 /* ---------- reservation form ---------- */
@@ -573,6 +878,20 @@ input[aria-invalid="true"] {
 }
 
 /* right rail benefit */
+.railFigure {
+  margin: 0 0 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.railFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
 .rail h3 {
   font-size: 1.7rem;
   color: var(--wine);
@@ -857,16 +1176,6 @@ select:focus-visible {
 
 /* ---------- responsive ---------- */
 @media (max-width: 860px) {
-  .hero .wrap {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-  .heroCard {
-    order: -1;
-  }
-  .steps {
-    grid-template-columns: 1fr;
-  }
   .formGrid {
     grid-template-columns: 1fr;
     gap: 30px;
@@ -879,9 +1188,6 @@ select:focus-visible {
   }
 }
 @media (max-width: 480px) {
-  .hero {
-    padding: 40px 0 32px;
-  }
   .dashgrid {
     grid-template-columns: 1fr 1fr;
   }

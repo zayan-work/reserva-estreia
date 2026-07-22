@@ -146,8 +146,12 @@ export default function FormCard() {
   return (
     <div className="formCard">
       <form ref={formRef} onSubmit={onSubmit} noValidate>
-        <h3>Reserve seu lugar</h3>
-        <p className="sub">Sem cobrança. Você só entra na lista de prioridade.</p>
+        {/* heading copy per the v0.0.2 content spec (Website.docx §5) */}
+        <h3>Garanta seu lugar na estreia</h3>
+        <p className="sub">
+          Sua reserva é gratuita e garante acesso prioritário à coleção antes do
+          lançamento oficial.
+        </p>
 
         <div className="field">
           <label htmlFor="nome">Nome</label>

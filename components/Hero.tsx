@@ -1,13 +1,30 @@
+import Image from "next/image";
 import { Check } from "./icons";
 import LiveCount from "./LiveCount";
 
-/** Hero — headline, subhead, one primary button, and the live-count card with
- *  three reassurances. Reassurance copy is LEGAL-SAFETY (Spec Part 4). */
+/** Hero — editorial photography + headline, one primary button, and the live
+ *  count with three reassurances. Reassurance copy is LEGAL-SAFETY (Spec Part 4).
+ *
+ *  Layout rule that must not regress: the copy panel never reaches the model's
+ *  face. The photograph sits in the right 64% of the frame on desktop (the face
+ *  lands at ~62–73% of the viewport at every width) while the panel is capped at
+ *  46%; on mobile the photo is stacked above the copy, so nothing overlaps at
+ *  all. See `.heroMedia` / `.heroPanel` in globals.css. */
 export default function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
-      <div className="wrap">
-        <div>
+      <div className="heroMedia">
+        <Image
+          src="/images/campaign/hero-editorial.webp"
+          alt="Mulher sorrindo, sentada na cama em luz natural, usando conjunto de lingerie em renda cor vinho"
+          fill
+          sizes="(min-width: 900px) 64vw, 100vw"
+          preload
+        />
+      </div>
+
+      <div className="heroInner wrap">
+        <div className="heroPanel">
           <span className="eyebrow">Coleção de estreia · lista de reserva</span>
           <h1 id="hero-title">
             A primeira coleção. <em>Feita pra você.</em>
@@ -16,20 +33,15 @@ export default function Hero() {
             Entre na lista de reserva sem pagar nada agora. Você garante
             prioridade e é a primeira a saber quando a peça chega.
           </p>
-          <a
-            href="#reservar"
-            className="barcta"
-            style={{ padding: "14px 26px", fontSize: ".95rem" }}
-          >
+          <a href="#reservar" className="heroCta">
             Reservar meu lugar
           </a>
-        </div>
 
-        <div className="heroCard">
-          <div className="k">
-            <LiveCount />
-            <div className="biglabel">pessoas já reservaram</div>
-            <div className="rule" />
+          <div className="heroProof">
+            <div className="k">
+              <LiveCount />
+              <div className="biglabel">pessoas já reservaram</div>
+            </div>
             <ul>
               <li>
                 <span className="tick">

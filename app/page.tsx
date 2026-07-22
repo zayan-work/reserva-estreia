@@ -1,3 +1,4 @@
+import Carousel from "@/components/Carousel";
 import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -10,7 +11,8 @@ import VisitBeacon from "@/components/VisitBeacon";
 
 /**
  * The landing page — one scroll, in the exact order of the Build Spec (Part 2):
- * header · hero · trust strip · how it works · reservation · FAQ · footer.
+ * header · hero · trust strip · how it works · collection carousel · reservation
+ * · FAQ · footer.
  * The internal demand dashboard lives at /painel (protected), never here.
  */
 export default function Home() {
@@ -25,6 +27,7 @@ export default function Home() {
         <Hero />
         <TrustStrip />
         <HowItWorks />
+        <Carousel />
         <Reservation />
         <Faq />
       </main>
