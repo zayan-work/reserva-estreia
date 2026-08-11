@@ -1,0 +1,888 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   MERIDIANO - Design system
+   Ported from "MERIDIANO Identity Website.docx" (docs/brand/identity/).
+   Emerald + gold. Cormorant Garamond for titles, Montserrat for body.
+
+   Nothing here is shared with the Estreia app and nothing here may import
+   from it. The two houses keep separate design languages on purpose.
+   ========================================================================= */
+
+:root {
+  /* Primary */
+  --emerald: #0f3a2e; /* backgrounds, navigation, hero, large sections */
+  --rainforest: #245345; /* hover states, cards, secondary blocks */
+  /* Accent - gold is an accent. Never overuse. */
+  --gold: #d6b35a; /* typography, icons, lines, borders */
+  --gold-light: #e5c97a; /* highlights only */
+  /* Neutrals */
+  --sand: #efe5d6; /* cards, editorial sections */
+  --ivory: #faf7f1; /* body text, light backgrounds */
+  --charcoal: #171513; /* text, footer, dark overlays */
+
+  /* Derived, for contrast-safe body copy on emerald (8.4:1 against --emerald) */
+  --ivory-muted: #c9d6ce;
+
+  /* Hairlines. Gold is structural here, so it stays faint. */
+  --rule: rgba(214, 179, 90, 0.28);
+  --rule-soft: rgba(214, 179, 90, 0.16);
+
+  --shell: 1240px;
+  --gutter: 24px;
+
+  /* Motion - "very slow, almost imperceptible, silk movement" */
+  --ease-silk: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@theme inline {
+  --color-emerald: var(--emerald);
+  --color-rainforest: var(--rainforest);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-sand: var(--sand);
+  --color-ivory: var(--ivory);
+  --color-charcoal: var(--charcoal);
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-body: var(--font-montserrat), system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* clear the fixed header when jumping to a section */
+  scroll-padding-top: 84px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--emerald);
+  color: var(--ivory);
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(214, 179, 90, 0.26);
+  color: var(--ivory);
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- type ---------- */
+
+.display {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 300;
+  line-height: 1.16;
+  letter-spacing: 0.005em;
+  color: var(--ivory);
+}
+
+/* Small uppercase labels - Montserrat Medium, 0.25em tracking, gold. */
+.label {
+  display: block;
+  font-size: 0.688rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.body-copy {
+  color: var(--ivory-muted);
+  font-size: 0.975rem;
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 200;
+  background: var(--gold);
+  color: var(--charcoal);
+  padding: 12px 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.skip:focus {
+  left: 0;
+}
+
+/* Focus is gold and always visible - the site is otherwise very low contrast
+   in its interactive affordances. */
+a:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ---------- section frame ---------- */
+
+.section {
+  position: relative;
+  padding-block: clamp(76px, 12vw, 148px);
+}
+
+.section-head {
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
+}
+.section-head .label {
+  margin-bottom: 22px;
+}
+.section-head h2 {
+  font-size: clamp(1.85rem, 4.6vw, 3rem);
+  /* deliberately not `text-wrap: balance` - it evens the lines by shrinking the
+     measure, which pushed these titles into three and four short lines instead
+     of the two the mockups show */
+  text-wrap: pretty;
+}
+
+/* A short gold rule used as a quiet divider. */
+.rule {
+  width: 46px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.6;
+  border: 0;
+}
+
+/* ---------- header ---------- */
+
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  background: rgba(15, 58, 46, 0.82);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-bottom: 1px solid var(--rule-soft);
+  transition: background 0.6s var(--ease-silk);
+}
+/* Over the hero the bar is invisible; it materialises on scroll. */
+.header[data-atop="true"] {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.header .shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: 68px;
+}
+
+.brandmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--gold);
+}
+.brandmark svg {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+.brandmark span {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.02rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  /* the tracking adds a trailing gap; pull it back so the mark reads centred */
+  margin-right: -0.34em;
+  color: var(--sand);
+}
+
+/* Desktop section nav - hidden on phones, where the page is a short scroll. */
+.navlinks {
+  display: none;
+  gap: 30px;
+}
+.navlinks a {
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory-muted);
+  text-decoration: none;
+  transition: color 0.4s var(--ease-silk);
+}
+.navlinks a:hover {
+  color: var(--gold);
+}
+
+.langswitch {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+}
+.langswitch a {
+  color: var(--ivory-muted);
+  text-decoration: none;
+  opacity: 0.62;
+  transition: opacity 0.4s var(--ease-silk), color 0.4s var(--ease-silk);
+}
+.langswitch a:hover {
+  opacity: 1;
+  color: var(--gold);
+}
+.langswitch a[aria-current="true"] {
+  color: var(--gold);
+  opacity: 1;
+}
+.langswitch .sep {
+  color: var(--gold);
+  opacity: 0.34;
+}
+
+@media (min-width: 960px) {
+  .navlinks {
+    display: flex;
+  }
+  .header .shell {
+    height: 78px;
+  }
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 120px 0 88px;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+/* Deepen the silk so the gold wordmark always clears contrast, and vignette
+   the edges so the fixed header has something to sit on. */
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      70% 55% at 50% 46%,
+      rgba(15, 58, 46, 0.14),
+      rgba(9, 32, 25, 0.72) 100%
+    ),
+    linear-gradient(180deg, rgba(9, 32, 25, 0.62), transparent 26%);
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+}
+.hero-emblem {
+  width: clamp(84px, 15vw, 128px);
+  height: auto;
+  color: var(--gold);
+  margin-bottom: clamp(26px, 4vw, 40px);
+}
+.hero h1 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(2.6rem, 11vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-right: -0.16em;
+  color: var(--gold);
+  /* a soft metallic sheen rather than a flat fill */
+  background: linear-gradient(
+    100deg,
+    #b8934a 0%,
+    #e9d391 26%,
+    #d6b35a 52%,
+    #f0dda6 74%,
+    #c2a054 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero .subline {
+  margin-top: clamp(18px, 3vw, 26px);
+  /* `ch` would resolve against this element's own very small font-size, which
+     collapsed the measure to ~210px and pushed the line into three; a rem cap
+     keeps it at two lines from 390px up. `balance` evens them. */
+  max-width: min(100%, 26rem);
+  text-wrap: balance;
+  font-size: clamp(0.66rem, 2.1vw, 0.78rem);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 2;
+  color: var(--sand);
+  margin-right: -0.22em;
+}
+.hero-scroll {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--sand);
+  opacity: 0.5;
+}
+.hero-scroll i {
+  display: block;
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+}
+
+/* ---------- essence ---------- */
+
+.essence {
+  background: var(--emerald);
+}
+.essence .lede {
+  max-width: 56ch;
+  margin: 28px auto 0;
+  text-align: center;
+}
+.essence-emblem {
+  width: 46px;
+  height: 46px;
+  color: var(--gold);
+  margin: 0 auto 26px;
+  opacity: 0.85;
+}
+
+.pillars {
+  display: grid;
+  gap: 46px 32px;
+  grid-template-columns: 1fr;
+  margin-top: clamp(56px, 8vw, 92px);
+  text-align: center;
+}
+.pillar svg {
+  width: 34px;
+  height: 34px;
+  color: var(--gold);
+  margin: 0 auto 20px;
+}
+.pillar h3 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.28rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+.pillar p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--ivory-muted);
+  max-width: 26ch;
+  margin-inline: auto;
+}
+@media (min-width: 640px) {
+  .pillars {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1000px) {
+  .pillars {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+}
+
+/* ---------- market ---------- */
+
+.market {
+  position: relative;
+  padding: 0;
+  background: #0b2b22;
+}
+.market-media {
+  position: relative;
+  aspect-ratio: 16 / 11;
+}
+.market-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.market-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 42%, #0b2b22 99%);
+}
+.market-copy {
+  position: relative;
+  padding: 8px 0 clamp(72px, 10vw, 104px);
+}
+.market-copy .label {
+  margin-bottom: 20px;
+}
+.market-copy p {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(1.22rem, 3.6vw, 1.78rem);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ivory);
+}
+
+@media (min-width: 900px) {
+  .market {
+    display: grid;
+    align-items: center;
+    min-height: 88vh;
+  }
+  .market-media {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+  /* fade the map into the panel instead of a hard seam */
+  .market-media::after {
+    background: linear-gradient(
+      90deg,
+      transparent 34%,
+      rgba(11, 43, 34, 0.55) 56%,
+      rgba(11, 43, 34, 0.92) 76%
+    );
+  }
+  .market-copy {
+    padding-block: clamp(80px, 9vw, 120px);
+    text-align: right;
+    max-width: 40%;
+    margin-left: auto;
+  }
+}
+
+/* ---------- portfolio ---------- */
+
+.portfolio {
+  background: var(--emerald);
+}
+.portfolio-grid {
+  display: grid;
+  gap: 26px;
+  grid-template-columns: 1fr;
+  margin-top: clamp(52px, 7vw, 82px);
+}
+.card {
+  position: relative;
+  /* the artwork is square and is shown whole - no crop, no zoom, no overlay */
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px solid var(--rule-soft);
+  background: #0b2b22;
+}
+.card img {
+  object-fit: cover;
+}
+/* A 30% scrim along the bottom edge, only to settle the card into the section.
+   Nothing is laid over the artwork, so it carries no legibility duty. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    transparent 70%,
+    rgba(8, 28, 22, 0.18) 86%,
+    rgba(8, 28, 22, 0.3) 100%
+  );
+  pointer-events: none;
+}
+.portfolio-note {
+  max-width: 54ch;
+  margin: clamp(40px, 5vw, 58px) auto 0;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--ivory-muted);
+  opacity: 0.78;
+}
+@media (min-width: 780px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- approach ---------- */
+
+.approach {
+  background: #0c3126;
+}
+.approach-grid {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: 1fr;
+  margin-top: clamp(52px, 7vw, 82px);
+  background: var(--rule-soft);
+  border: 1px solid var(--rule-soft);
+}
+.approach-card {
+  background: var(--rainforest);
+  padding: clamp(34px, 4vw, 46px) clamp(26px, 3vw, 38px);
+  transition: background 0.7s var(--ease-silk);
+}
+.approach-card:hover {
+  background: #2a5e4e;
+}
+.approach-card .n {
+  display: block;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0.72;
+  margin-bottom: 26px;
+}
+.approach-card h3 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--gold-light);
+  margin-bottom: 16px;
+}
+.approach-card p {
+  font-size: 0.875rem;
+  line-height: 1.85;
+  color: var(--ivory);
+}
+@media (min-width: 860px) {
+  .approach-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- leadership ---------- */
+
+.leadership {
+  position: relative;
+  overflow: hidden;
+}
+.leadership-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.leadership-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.leadership-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 58, 46, 0.9),
+    rgba(11, 40, 32, 0.82)
+  );
+}
+.leadership .shell {
+  position: relative;
+  z-index: 1;
+}
+.people {
+  display: grid;
+  gap: clamp(44px, 6vw, 64px);
+  max-width: 900px;
+  margin: clamp(56px, 7vw, 86px) auto 0;
+}
+.person {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+.person .role {
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-right: -0.22em;
+}
+.person .role::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.5;
+  margin-top: 12px;
+}
+.person h3 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(1.5rem, 3.4vw, 1.95rem);
+  font-weight: 400;
+  color: var(--ivory);
+  margin-bottom: 12px;
+}
+.person p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--ivory-muted);
+  max-width: 46ch;
+}
+.person a {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.5s var(--ease-silk);
+}
+.person a:hover {
+  border-bottom-color: var(--gold);
+}
+@media (min-width: 760px) {
+  .person {
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+  }
+  .person .role {
+    padding-top: 12px;
+  }
+}
+
+/* ---------- contact ---------- */
+
+.contact {
+  background: var(--emerald);
+}
+.contact-grid {
+  display: grid;
+  gap: clamp(44px, 6vw, 72px);
+  grid-template-columns: 1fr;
+  max-width: 900px;
+  margin: clamp(52px, 7vw, 80px) auto 0;
+}
+.contact-block .label {
+  margin-bottom: 14px;
+}
+.contact-block a {
+  color: var(--ivory);
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: color 0.5s var(--ease-silk), border-color 0.5s var(--ease-silk);
+}
+.contact-block a:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+.contact-block address {
+  font-style: normal;
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: var(--ivory-muted);
+  max-width: 34ch;
+}
+.contact-block + .contact-block {
+  margin-top: 34px;
+}
+
+/* form - one field, one button, per the handoff */
+.contact-form textarea {
+  width: 100%;
+  min-height: 96px;
+  resize: vertical;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 4px 0 14px;
+  color: var(--ivory);
+  font-family: inherit;
+  /* 16px so iOS does not zoom the page on focus */
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.8;
+  transition: border-color 0.5s var(--ease-silk);
+}
+.contact-form textarea::placeholder {
+  color: var(--ivory-muted);
+  opacity: 0.5;
+}
+.contact-form textarea:focus {
+  outline: none;
+  border-bottom-color: var(--gold);
+}
+.contact-form textarea:focus-visible {
+  outline: none;
+}
+.contact-form button {
+  margin-top: 26px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--gold);
+  padding: 0 2px 8px;
+  color: var(--gold);
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.5s var(--ease-silk), border-color 0.5s var(--ease-silk);
+  margin-right: -0.24em;
+}
+.contact-form button:hover:not(:disabled) {
+  color: var(--gold-light);
+  border-bottom-color: var(--gold-light);
+}
+.contact-form button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.form-note {
+  margin-top: 18px;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--ivory-muted);
+}
+.form-note[data-state="error"] {
+  color: #e0a89a;
+}
+/* honeypot - off-screen, never shown, never announced */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+@media (min-width: 760px) {
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- footer ---------- */
+
+.footer {
+  border-top: 1px solid var(--rule-soft);
+  background: var(--emerald);
+  padding-block: 40px 46px;
+}
+.footer .shell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 30px;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer p {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ivory-muted);
+  opacity: 0.72;
+}
+.footer .built {
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.86;
+  margin-right: -0.22em;
+}
+
+/* ---------- motion ----------
+   "Very slow. Almost imperceptible. Silk movement. Soft fade."
+   Elements start hidden only when JS is available to reveal them, so a
+   no-JS visitor sees the full page. */
+.reveal {
+  opacity: 1;
+}
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 1.5s var(--ease-silk),
+    transform 1.5s var(--ease-silk);
+}
+.js .reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
