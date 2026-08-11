@@ -54,3 +54,6 @@ scripts/
 
 # browser test artifacts
 .playwright-mcp/
+
+# office suite lock files
+.~lock.*#
