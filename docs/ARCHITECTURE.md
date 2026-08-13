@@ -227,7 +227,7 @@ four resolved themselves once the newer documents won:
 | 3 | "Thesis" and "The lines" | **Our Essence** (with four pillars) and **Portfolio**, per the content doc and mockups |
 | 4 | "No CTA. Nothing to click." | Section nav in the header, per content doc section 8 and every mockup. The hero itself still has no CTA. |
 | 5 | English at launch, PT later, ES maybe | **All three shipped**, since finished copy for all three was delivered |
-| 7 | No emblem mentioned | Emblem present, drawn as vector. See the note below. |
+| 7 | No emblem mentioned | Emblem present. Maria supplied the master artwork; see the note below. |
 
 Palette, from `MERIDIANO Identity Website.docx`:
 
@@ -246,11 +246,16 @@ gold labels, two weights each.
 
 ### Still open, not blocking
 
-- **The emblem is a vector reconstruction**, not Maria's master file.
-  `components/Emblem.tsx` redraws it from the identity document's description
-  (thin circular border, palm, sun, mountain, horizon, abstracted Copacabana
-  wave). It is crisp at any size and correct in register, but it is not the
-  original artwork. **Ask Maria for the SVG or AI export.**
+- **The emblem is a bitmap, not a vector.** Maria supplied
+  `Logo-Meridiano-circulo.png` (640px) and a `.svg` that turns out to be a
+  wrapper around that same bitmap rather than a real vector. We cut a 478px
+  square at 79,77 out of the 640px original and mask it to a
+  transparent disc with an ellipse of rx 224 / ry 235 - the master is very
+  slightly oval. The result is checked in as
+  `apps/meridiano/public/images/emblem.png`, used in the header, hero, Our
+  Essence, the 404 page and the share card. It is sharp at every size the site
+  actually renders (up to 128px, 256 device px), so this is not urgent - but a
+  true vector export would future-proof it. **Ask Maria for the SVG or AI.**
 - **The portfolio card artwork could not be used whole.** Each supplied card is
   a finished composition with the category name and tagline set into it in
   English, so it cannot translate and it collides with any text laid over it.

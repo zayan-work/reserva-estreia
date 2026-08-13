@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 import { getDictionary } from "@/lib/content";
 
@@ -6,11 +8,19 @@ import { getDictionary } from "@/lib/content";
  * WhatsApp, LinkedIn or email. Institutional, not promotional.
  *
  * Flexbox only (a satori constraint) and the built-in font, so the build has no
- * network dependency. To ship Maria's artwork instead, drop an
- * `opengraph-image.png` into this `app/` folder - a static file of that name
- * takes precedence over this generator automatically.
+ * network dependency. The emblem is inlined from disk as a data URI because
+ * satori cannot resolve a site-relative URL at build time.
+ *
+ * To ship a finished artwork instead, drop an `opengraph-image.png` into this
+ * `app/` folder - a static file of that name takes precedence automatically.
  */
 const t = getDictionary("en");
+
+const emblem =
+  "data:image/png;base64," +
+  readFileSync(
+    path.join(process.cwd(), "public/images/emblem.png"),
+  ).toString("base64");
 
 export const alt = `Meridiano · ${t.hero.subline}`;
 export const size = { width: 1200, height: 630 };
@@ -43,6 +53,9 @@ export default function OpengraphImage() {
             display: "flex",
           }}
         />
+
+        {/* satori renders this, not a browser - next/image has no meaning here. */}
+        <img src={emblem} width={132} height={132} alt="" style={{ marginBottom: 44 }} />
 
         <div
           style={{

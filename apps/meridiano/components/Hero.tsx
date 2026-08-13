@@ -22,7 +22,7 @@ export function Hero({ t }: { t: Dictionary }) {
       </div>
 
       <div className="hero-inner shell">
-        <Emblem className="hero-emblem" title={t.hero.emblemAlt} />
+        <Emblem className="hero-emblem" title={t.hero.emblemAlt} preload />
         <h1 id="hero-title">{t.hero.wordmark}</h1>
         <p className="subline">{t.hero.subline}</p>
       </div>
