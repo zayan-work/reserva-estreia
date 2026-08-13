@@ -143,9 +143,6 @@ export const es: Dictionary = {
     title: "Consultas comerciales.",
     inquiryLabel: "Consultas comerciales",
     inquiryEmail: "hello@meridianocasa.com",
-    addressLabel: "Dirección",
-    address:
-      "01 Media & Advertising Ltda., Rua Fiandeiras 929, suite 51, Vila Olímpia, São Paulo, SP, 04.545-006, Brasil",
     formLabel: "Envíe un mensaje",
     formPlaceholder: "Su mensaje",
     formButton: "Enviar",

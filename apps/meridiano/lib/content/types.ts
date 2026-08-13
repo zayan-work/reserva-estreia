@@ -104,8 +104,6 @@ export type Dictionary = {
     title: string;
     inquiryLabel: string;
     inquiryEmail: string;
-    addressLabel: string;
-    address: string;
     formLabel: string;
     formPlaceholder: string;
     formButton: string;

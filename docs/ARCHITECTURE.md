@@ -302,7 +302,8 @@ Total page weight about 411KB across 21 requests, against a 1.5MB budget.
 3. Set `CONTACT_WEBHOOK_URL` so the form delivers to a real inbox
 4. Two host projects, one repo: root directories `apps/estreia` and
    `apps/meridiano`, separate env and separate domains
-5. Replace the emblem with Maria's master vector
+5. Restore the registered address in the contact block once it is cleared for
+   publication (removed for now; see the note in `components/Contact.tsx`)
 6. Staging link to Rengan, approval, then live
 
 Confidentiality (handoff section 08) holds throughout: staging stays private,

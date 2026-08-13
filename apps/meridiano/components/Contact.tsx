@@ -26,10 +26,8 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
               </a>
             </div>
 
-            <div className="contact-block">
-              <span className="label">{t.contact.addressLabel}</span>
-              <address>{t.contact.address}</address>
-            </div>
+            {/* The registered address is deliberately absent for now. Restore
+                the contact-block here when it is cleared for publication. */}
           </div>
 
           <ContactForm t={t} locale={locale} />
