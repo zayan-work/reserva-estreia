@@ -16,7 +16,25 @@ function resolveSiteUrl(): string {
   return "https://reserva.estreia.com.br";
 }
 
-export const SITE_URL = resolveSiteUrl().replace(/\/$/, "");
+/**
+ * Vercel lists domains without a scheme, so NEXT_PUBLIC_SITE_URL gets pasted in
+ * bare more often than not. Accept that shape instead of failing on it: a bare
+ * host reaches `new URL()` in the root layout and dies as a plain
+ * ERR_INVALID_URL, with nothing in the stack naming the variable at fault.
+ */
+function normaliseSiteUrl(value: string): string {
+  const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  const trimmed = withScheme.replace(/\/+$/, "");
+  if (!URL.canParse(trimmed)) {
+    throw new Error(
+      `Invalid site URL ${JSON.stringify(value)}. Set NEXT_PUBLIC_SITE_URL to ` +
+        `a full origin, for example https://example.com.`,
+    );
+  }
+  return trimmed;
+}
+
+export const SITE_URL = normaliseSiteUrl(resolveSiteUrl());
 
 export const SITE = {
   brand: "Estreia",

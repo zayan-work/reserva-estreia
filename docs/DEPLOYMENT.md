@@ -58,7 +58,7 @@ Production, because Estreia's behaviour depends on them:
 
 | Variable | Why it matters on Vercel |
 |---|---|
-| `NEXT_PUBLIC_SITE_URL` | canonical, sitemap, Open Graph |
+| `NEXT_PUBLIC_SITE_URL` | canonical, sitemap, Open Graph. A bare host is accepted and normalised to `https://`. |
 | `PAINEL_USER` / `PAINEL_PASSWORD` | Basic Auth on `/painel` and `/api/stats`. If unset, the code falls back to `estreia` / `trocar-esta-senha`, which is a public dashboard. Check this one. |
 | `RESERVATIONS_WEBHOOK_URL` | **Required.** Vercel's filesystem is ephemeral, so the JSON store does not survive. Every reservation must mirror to the Sheet / CRM endpoint or it is lost. |
 | `DECISION_THRESHOLD` | optional, dashboard only |
